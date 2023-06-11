@@ -18,10 +18,10 @@ export class Server {
     private server!: httpServer;
 
     constructor() {
+        this.connectDb();
         this.app = express();
         this.port = process.env.PORT || process.env.port || '3000';
 
-        this.connectDb();
 
         this.middlewares();
 
@@ -54,6 +54,10 @@ export class Server {
      */
     public get db(): typeof mongoose {
         return this.Db;
+    }
+
+    public get App() {
+        return this.app;
     }
 
     /**

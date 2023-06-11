@@ -1,0 +1,39 @@
+import { getResizedPath, toMD5 } from "../util/imageUtil";
+
+const imageBinaryMock = "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"
+const imageNameMock = 'test-image';
+const imageExtensionMock = 'png';
+const md5Mock = 'b239d3c18a4c094fea8e53a0b3ba657b';
+
+describe('imageUtil', () => {
+    it('Should return a base 64 string from the given file', () => {
+
+    });
+
+    it('Shoud generate an MD5 string from a file binary string', () => {
+        const result = toMD5(imageBinaryMock);
+        expect(typeof result === 'string').toBe(true);
+        expect(result).toEqual(md5Mock);
+    });
+
+    it('Should get a resized paths object', () => {
+        const result800 = getResizedPath(
+            imageBinaryMock,
+            imageNameMock,
+            imageExtensionMock,
+            '800'
+        );
+
+        const result1024 = getResizedPath(
+            imageBinaryMock,
+            imageNameMock,
+            imageExtensionMock,
+            '1024'
+        );
+
+        expect(typeof result800 === 'object').toBe(true);
+        expect('fullDir' in result800).toBe(true);
+        expect(result800.md5).toEqual(md5Mock);
+        expect(result1024.shortDir).toEqual(`${imageNameMock}/1024/${md5Mock}.${imageExtensionMock}`);
+    })
+})
