@@ -4,7 +4,6 @@ export const TaskStatus = ['INITIATED', 'SENT_TO_CLOUD', 'RECEIVED_RESIZED', 'CO
 export type TaskStatusType = 'INITIATED' | 'SENT_TO_CLOUD' | 'RECEIVED_RESIZED' | 'COMPLETED';
 export enum TaskStatusEnum {
     INITIATED = 'INITIATED',
-    SENT_TO_CLOUD = 'SENT_TO_CLOUD',
     RECEIVED_RESIZED = 'RECEIVED_RESIZED',
     COMPLETED = 'COMPLETED'
 };

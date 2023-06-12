@@ -53,6 +53,54 @@ Este proyecto se divide en varias carpetas, cada una con una finalidad concreta:
 `util` -> Funciones de utilidad que serán usadas por los servicios
 
 
+## Persistencia de datos
+
+Este proyecto viene persiste datos en una base de datos MongoDB.
+
+Tendremos dos colecciones para dicho fin:
+
+<span style="color: crimson;"> Tasks </span>
+Esta colección guarda las tareas que se lanzan desde el servidor de Node.js. Su estructura será la siguiente:
+
+```
+
+task: {
+    id: ObjectId -> Id que MongoDB inserta automáticamente en la creación de los objetos.
+    status: string -> El estado actual de la tarea lanzada. Los posibles estados son `INITIATED`, `RECEIVED_RESIZED` y `COMPLETED`.
+    type: string -> Tipo de tarea lanzada. En este momento, sólo valor de `IMAGE_SCALER`. A ampliar en posible futuro.
+    path: string -> Path donde se aloja el recurso a tratar. En este momento, el recurso se carga en memoria desde el request, por lo que el valor actual sería `memory`.
+    images: {
+        original: string -> Id de MongoDB que hace referencia al documento referenciando a la imagen original recibida por el request.
+        '800': string -> Id de MongoDB que hace referencia al documento referenciando a la imagen redimensionada a 800px de ancho.
+        '1024': string -> Id de MongoDB que hace referencia al documento referenciando a la imagen redimensionada a 1024px de ancho.
+    }
+    createdAt: Date -> Fecha de creación del documento.
+    updates: {
+        updatedAt: Date -> Fecha de actualización del documento.
+        oldStatus?: string -> Estado anterior a la actualización. Sólo a rellenar si tenía un estado anterior.
+        newStatus: string -> Nuevo estado de la tarea.
+    }[]
+}
+
+``` 
+
+<span style='color: crimson;'> Images </span>
+Esta colección guarda una referencia a las imágenes con las que se trabaja, tanto la original como las referenciadas. Su estructura será la siguiente:
+
+```
+
+image: {
+    id: ObjectId -> Id que MongoDB inserta automáticamente en la creación de los objetos.
+    resolution: string -> Resolución del ancho de la imagen en píxeles.
+    mimeType: string -> MimeType de la imagen.
+    md5: string -> MD5 generado del binario de la imagen.
+    path: string -> Path relativo en el que se encuentra la imagen alojada.
+    timestamp: Date -> Fecha de creación del documento.
+}
+
+```
+
+
 ## Flujo de datos del proyecto
 
 ### Se crea un nuevo task
